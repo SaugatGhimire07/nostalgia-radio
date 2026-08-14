@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  /* -- Palette -----------------------------------------------------
+     Named for the world this site lives in: old film stock, marigold
+     garlands strung across a jukebox, brick-dust dusk light.
+  ------------------------------------------------------------------ */
+  --color-ink: #0b0d12;
+  --color-ink-2: #14131a;
+  --color-marigold: #e8a33d;
+  --color-marigold-light: #f3c374;
+  --color-rust: #b8452f;
+  --color-cream: #f4e8cf;
+  --color-dusk: #b9a9c4;
+
+  /* -- Type ---------------------------------------------------------
+     Fraunces: warm, old-world serif for titles -- a film title card.
+     Manrope: quiet geometric sans for interface labels.
+     IBM Plex Mono: tabular digits for anything that counts or ticks.
+  ------------------------------------------------------------------ */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-yatra: var(--font-yatra-one), "Yatra One", cursive;
+
+  --animate-spin-slow: spin 8s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+  }
+
+  body {
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-marigold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .safe-t {
+    top: max(1rem, env(safe-area-inset-top));
+  }
+  .safe-b {
+    bottom: max(4rem, calc(env(safe-area-inset-bottom) + 1rem));
+  }
+  .safe-l {
+    left: max(1rem, env(safe-area-inset-left));
+  }
+  .safe-r {
+    right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-yatra {
+    font-family: var(--font-yatra);
+  }
+  .font-mono-nums {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* -- Hero background ----------------------------------------------
+   Two separately-composed images: a landscape frame for wide
+   viewports, a portrait frame -- not a crop -- for tall ones.
+------------------------------------------------------------------- */
+.hero-bg {
+  background-image: url("/bg/scene-wide.png");
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (orientation: portrait) {
+  .hero-bg {
+    background-image: url("/bg/scene-tall.png");
+  }
+}
+
+/* -- Film grain ------------------------------------------------------
+   An SVG feTurbulence data URI, blended over the scene like dust on
+   a projector reel. Cheap, GPU-friendly, no image request.
+--------------------------------------------------------------------- */
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.3;
+}
+
+/* -- YouTube audio host ------------------------------------------------
+   The YT iframe only exists to produce audio -- the visible vinyl art is
+   a static thumbnail (see Vinyl.tsx). Keep the iframe alive and playing
+   by sizing it normally, just tucked off-screen rather than display:none
+   (which some browsers treat as pausing media).
+--------------------------------------------------------------------- */
+.yt-audio-host {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
