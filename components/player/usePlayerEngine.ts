@@ -35,6 +35,22 @@ export function usePlayerEngine(playlists: Playlist[]) {
   const playlistRef = useRef<Playlist>(playlist);
   playlistRef.current = playlist;
 
+  // Start on a random playlist/track each visit instead of always the first.
+  // Deferred to an effect (client-only) so the server-rendered and initial
+  // client render both start at index 0 and stay in sync -- no hydration
+  // mismatch. The player-creation effect below re-syncs to whatever track
+  // is current by the time it's ready, so this lands before playback starts.
+  useEffect(() => {
+    const randomPlaylistIndex = Math.floor(Math.random() * playlists.length);
+    const randomTrackIndex = Math.floor(
+      Math.random() * playlists[randomPlaylistIndex].tracks.length,
+    );
+    setPlaylistIndex(randomPlaylistIndex);
+    setTrackIndex(randomTrackIndex);
+    // Intentionally run once on mount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const goToTrack = useCallback(
     (nextIndex: number, opts: { autoplay: boolean }) => {
       const list = playlistRef.current.tracks;
