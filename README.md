@@ -1,5 +1,7 @@
 # Nostalgia Radio 🇳🇵
 
+**Live:** [nostalgia-radio-alpha.vercel.app](https://nostalgia-radio-alpha.vercel.app)
+
 A nostalgic Nepali music radio web application designed to bring the feeling of old Kathmandu/Nepalese streets, local shops, traditional architecture, and classic Nepali music into a modern web experience.
 
 The project combines a cinematic visual experience with a custom music player, Nepali-inspired typography, ambient styling, and curated listening modes.
@@ -56,7 +58,6 @@ The project combines a cinematic visual experience with a custom music player, N
 ```text
 nostalgia-radio/
 ├── app/
-│   ├── bg/
 │   ├── globals.css
 │   ├── layout.tsx
 │   └── page.tsx
@@ -90,6 +91,9 @@ nostalgia-radio/
 │
 ├── lib/
 │   └── loadYouTubeApi.ts
+│
+├── types/
+│   └── youtube.d.ts
 │
 ├── public/
 │   └── bg/
@@ -133,14 +137,21 @@ data/
 
 This makes it easier to add, remove, or organize songs without changing the player interface.
 
-A track can contain information such as:
+Each track is a one-line object:
 
 ```ts
 {
-  title: "Paujuko Chham Chham",
-  artist: "Udit Narayan Jha & Deepa Narayan Jha"
+  id: "unique-slug",
+  title: "Song title",
+  artist: "Performing artist",
+  film: "Film / album",
+  year: 1975,
+  duration: 245,           // seconds, shown until playback reports the real value
+  videoId: "XXXXXXXXXXX",  // the 11-character id from the YouTube URL
 }
 ```
+
+Only add a video you hold the rights to, or that's the rights holder's own YouTube upload with embedding enabled.
 
 ## 🖥️ Running Locally
 
@@ -170,18 +181,6 @@ Visit:
 ```text
 http://localhost:3000
 ```
-
-## 🔐 Environment Variables
-
-If the application requires a YouTube API key or other external credentials, create a `.env.local` file in the project root.
-
-Example:
-
-```env
-YOUTUBE_API_KEY=your_api_key_here
-```
-
-Do not commit API keys or other secrets to GitHub.
 
 ## 🎨 Design Inspiration
 
@@ -222,7 +221,7 @@ Potential improvements include:
 - [ ] Add persistent playback between page navigation.
 - [ ] Add richer album artwork and track metadata.
 - [ ] Add an optional dark/low-light listening mode.
-- [ ] Deploy the application for public listening.
+- [x] Deploy the application for public listening.
 
 ## 👨‍💻 About the Project
 
