@@ -30,13 +30,13 @@ export function MobilePlayer({
   onSeek,
 }: MobilePlayerProps) {
   return (
-    <div className={`flex w-full flex-col gap-3 rounded-[26px] p-4 sm:hidden ${GLASS}`}>
+    <div className={`flex w-full flex-col gap-2 rounded-[20px] p-3 sm:hidden ${GLASS}`}>
       {/* row 1 -- vinyl + title/artist */}
-      <div className="flex items-center gap-3">
-        <Vinyl thumbnailUrl={thumbnailUrl} isPlaying={isPlaying} size={64} spindleSize={10} />
+      <div className="flex items-center gap-2.5">
+        <Vinyl thumbnailUrl={thumbnailUrl} isPlaying={isPlaying} size={48} spindleSize={8} />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[15px] font-semibold text-white">{title}</p>
-          <p className="truncate text-[12.5px] text-white/70">{artist}</p>
+          <p className="truncate text-[13px] font-semibold text-white">{title}</p>
+          <p className="truncate text-[11px] text-white/70">{artist}</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export function MobilePlayer({
 
       {/* row 3 -- time left, transport centred */}
       <div className="grid grid-cols-3 items-center">
-        <div className="text-[11px] text-white/60 font-mono-nums">
+        <div className="text-[10px] text-white/60 font-mono-nums">
           {formatTime(currentTime)} / {formatTime(duration)}
         </div>
         <div className="flex justify-center">
